@@ -1,6 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useFileHandler } from '../hooks/useFileHandler';
 
 interface UploadDropZoneProps {
   className?: string;

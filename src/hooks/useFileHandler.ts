@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { msalInstance } from '../auth/AuthService';
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 interface UploadSasUrlResponse {
   userId: string;
@@ -13,9 +13,8 @@ export function useFileHandler() {
   const [sasUrl, setSasUrl] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadSasUrlResponse, setUploadSasUrlResponse] = useState<UploadSasUrlResponse | null>(null);
-  const [hubConnection, setHubConnection] = useState<HubConnection | null>(null);
 
-  const pickFile = useCallback(async () => {
+  const pickFile = async () => {
     console.log('🚀 Starting file pick process...');
     try {
       const filePicker = document.createElement('input');
@@ -57,75 +56,27 @@ export function useFileHandler() {
       console.error('❌ Error in pickFile:', err);
       setError(err instanceof Error ? err.message : 'An error occurred while picking the file');
     }
-  }, []);
+  };
 
-  const handleDragOver = useCallback(async (e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
-  }, []);
+  };
 
-  const handleDragLeave = useCallback(async (e: React.DragEvent) => {
+  const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-  }, []);
+  };
 
-  const handleDrop = useCallback(async (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     setFile(e.dataTransfer.files[0]);
-  }, []);
+  };
 
-  const handleButtonClick = useCallback(() => {
+  const handleButtonClick = () => {
     pickFile();
-  }, [pickFile]);
-
-  const uploadFile = useCallback(async () => {
-    if (!file) {
-      console.error('❌ No file selected for upload');
-      setError('Please select a file first');
-      return;
-    }
-
-        
-
-    console.log('🎥 Starting video upload process...');
-    try {
-      const uploadSasUrlResponse = await getUploadSasUrl();
-      setIsLoading(true);
-      setError(null);
-      console.log('⏳ Loading state set to true');
-
-      
-      console.log('📤 Sending PUT request to blob storage...');
-      if(uploadSasUrlResponse?.uploadSasUrl) {
-        const response = await fetch(uploadSasUrlResponse?.uploadSasUrl, {
-          method: 'PUT',
-          body: file,
-          headers: {
-            'x-ms-blob-type': 'BlockBlob',
-            'x-ms-meta-userId': uploadSasUrlResponse?.userId,
-          },
-        });
-        console.log('📤 Response received:', response);
-        if (!response.ok) {
-          console.error('❌ Server responded with error:', response.status);
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-      }
-      else {      
-        console.error('❌ No upload SAS URL found');
-        setError('Failed to get upload SAS URL');
-        return;
-      }
-    } catch (error) {
-      console.error('❌ Error in uploadFile:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Upload failed';
-      setError(errorMessage);
-      setIsLoading(false);
-      console.log('❌ Upload process failed');
-      throw error;
-    }
-  }, [file]);
+  };
 
   const getUploadSasUrl = useCallback(async () => {
     const account = msalInstance.getActiveAccount();
@@ -174,6 +125,51 @@ export function useFileHandler() {
     }
   }, []);
 
+  const uploadFile = useCallback(async () => {
+    if (!file) {
+      console.error('❌ No file selected for upload');
+      setError('Please select a file first');
+      return;
+    }
+
+    console.log('🎥 Starting video upload process...');
+    try {
+      const uploadSasUrlResponse = await getUploadSasUrl();
+      setIsLoading(true);
+      setError(null);
+      console.log('⏳ Loading state set to true');
+
+      console.log('📤 Sending PUT request to blob storage...');
+      if(uploadSasUrlResponse?.uploadSasUrl) {
+        const response = await fetch(uploadSasUrlResponse?.uploadSasUrl, {
+          method: 'PUT',
+          body: file,
+          headers: {
+            'x-ms-blob-type': 'BlockBlob',
+            'x-ms-meta-userId': uploadSasUrlResponse?.userId,
+          },
+        });
+        console.log('📤 Response received:', response);
+        if (!response.ok) {
+          console.error('❌ Server responded with error:', response.status);
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      }
+      else {      
+        console.error('❌ No upload SAS URL found');
+        setError('Failed to get upload SAS URL');
+        return;
+      }
+    } catch (error) {
+      console.error('❌ Error in uploadFile:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+      setError(errorMessage);
+      setIsLoading(false);
+      console.log('❌ Upload process failed');
+      throw error;
+    }
+  }, [file, getUploadSasUrl]);
+
   async function startSignalR(accessToken: string) {
     console.log('🔌 Starting SignalR connection setup...');
     console.log('🔑 Access token length:', accessToken?.length || 0);
@@ -186,8 +182,6 @@ export function useFileHandler() {
         .build();
 
       console.log('🏗️ HubConnectionBuilder created successfully');
-
-      setHubConnection(connection);
 
       connection.on("TrimSucceeded", (url: string) => {
         console.log("🎉 TrimSucceeded SAS URL received:", url);
