@@ -110,7 +110,6 @@ export function useFileHandler() {
       
       console.log('📥 Upload SAS URL response received, parsing JSON...');
       const result: UploadSasUrlResponse = await response.json();
-      console.log('✅ Upload SAS URL result:', result);
       
       setUploadSasUrlResponse(result);
       setIsLoading(false);
@@ -149,7 +148,6 @@ export function useFileHandler() {
             'x-ms-meta-userId': uploadSasUrlResponse?.userId,
           },
         });
-        console.log('📤 Response received:', response);
         if (!response.ok) {
           console.error('❌ Server responded with error:', response.status);
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -172,8 +170,6 @@ export function useFileHandler() {
 
   async function startSignalR(accessToken: string) {
     console.log('🔌 Starting SignalR connection setup...');
-    console.log('🔑 Access token length:', accessToken?.length || 0);
-    console.log('🔑 Access token preview:', accessToken?.substring(0, 20) + '...');
     
     try {
       const connection = new HubConnectionBuilder()
