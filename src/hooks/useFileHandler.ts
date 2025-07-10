@@ -92,7 +92,6 @@ export function useFileHandler() {
         scopes: [process.env.REACT_APP_API_SCOPE as string],
       };
       const testResponse = await msalInstance.acquireTokenSilent(request);
-      console.log(testResponse);
       startSignalR(testResponse.accessToken);
 
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/upload-sas-url`, {
