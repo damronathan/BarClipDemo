@@ -4,7 +4,7 @@
 BarClip is a React application that automates video trimming for weightlifters using computer vision to determine barbell movement.
 
 ## Live MVP
-[Tray BarClip here](barclip.com)
+[Try BarClip here](barclip.com)
 
 ## Usage
 1. **Create an account** - Sign up using the authentication system
