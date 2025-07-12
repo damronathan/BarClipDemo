@@ -82,7 +82,10 @@ export function useFileHandler() {
     const account = msalInstance.getActiveAccount();
     if (!account) {
       setError('You were logged out. Please login again.');
-      window.location.href = '/';
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2000);
+      return;
     }
     
     try {
