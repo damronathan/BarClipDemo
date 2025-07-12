@@ -81,7 +81,8 @@ export function useFileHandler() {
   const getUploadSasUrl = useCallback(async () => {
     const account = msalInstance.getActiveAccount();
     if (!account) {
-      throw new Error("No active account. User might not be signed in.");
+      setError('You were logged out. Please login again.');
+      window.location.href = '/';
     }
     
     try {
