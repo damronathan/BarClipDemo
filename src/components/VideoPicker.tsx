@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from 'styled-components';
+import { msalInstance } from "../auth/AuthService";
 
 interface FilePickerProps {
   className?: string;
@@ -13,8 +14,19 @@ const FilePicker: React.FC<FilePickerProps> = ({
   accept = "video/*",
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleButtonClick = () => {
+    const account = msalInstance.getActiveAccount();
+    if (!account) {
+      setError('You were logged out. Please login again.');
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2000);
+      return;
+    }
+
+    setError(null); // Clear any previous errors
     inputRef.current?.click();
   };
 
@@ -31,6 +43,7 @@ const FilePicker: React.FC<FilePickerProps> = ({
       <UploadButton onClick={handleButtonClick}>
         Choose Video
       </UploadButton>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       <input
         type="file"
         ref={inputRef}
@@ -64,6 +77,13 @@ const UploadButton = styled.button`
   &:active {
     transform: translateY(0);
   }
+`;
+
+const ErrorMessage = styled.div`
+  color: #ef4444;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
 `;
 
 export default FilePicker;
