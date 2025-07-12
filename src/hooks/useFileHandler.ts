@@ -139,6 +139,10 @@ export function useFileHandler() {
     console.log('🎥 Starting video upload process...');
     try {
       const uploadSasUrlResponse = await getUploadSasUrl();
+      if (!uploadSasUrlResponse) {
+        return;
+      }
+      
       setIsLoading(true);
       setError(null);
       console.log('⏳ Loading state set to true');
