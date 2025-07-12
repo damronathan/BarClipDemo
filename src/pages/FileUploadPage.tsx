@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFileHandler } from '../hooks/useFileHandler';
-import UploadDropZone from '../components/UploadDropZone';
+import VideoPicker from '../components/VideoPicker';
 import Lottie from 'lottie-react';
 import barClipLottie from '../assets/Bar-Clip-Lottie.json';
 import '../styles/pages.css';
@@ -20,9 +20,21 @@ const FileUploadPage: React.FC = () => {
       handleDragOver,
       handleDragLeave,
       handleDrop,
-      handleButtonClick,            
+      handleButtonClick,
+      setFile,            
     }
   } = useFileHandler();
+
+  const handleFileSelected = (selectedFile: File) => {
+    // Check if it's a video file
+    if (!selectedFile.type.startsWith('video/')) {
+      console.error('❌ Invalid file type:', selectedFile.type);
+      return;
+    }
+
+    // Update state with the selected file and clear any previous errors
+    setFile(selectedFile);
+  };
 
   return (
     <div className="page-container">
@@ -42,7 +54,7 @@ const FileUploadPage: React.FC = () => {
         
         {!sasUrl && !isLoading && (
           <>
-            <UploadDropZone className={isDragging ? 'drag-over' : ''} onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onButtonClick={handleButtonClick} />
+            <VideoPicker onFileSelected={handleFileSelected} />
 
             <div className="upload-button-container">
               {file && (

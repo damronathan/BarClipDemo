@@ -228,7 +228,8 @@ export function useFileHandler() {
       handleDragLeave,
       handleDrop,
       handleButtonClick,
-      getUploadSasUrl
+      getUploadSasUrl,
+      setFile
     }
   };
 }
