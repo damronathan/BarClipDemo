@@ -13,14 +13,9 @@ const FileUploadPage: React.FC = () => {
       isLoading,
       error,
       sasUrl,
-      isDragging,
     },
     handlers: {
       uploadFile,
-      handleDragOver,
-      handleDragLeave,
-      handleDrop,
-      handleButtonClick,
       setFile,            
     }
   } = useFileHandler();
