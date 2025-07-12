@@ -1,12 +1,14 @@
 import { useState, useCallback } from 'react';
 import { msalInstance } from '../auth/AuthService';
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import { useNavigate } from 'react-router-dom';
 
 interface UploadSasUrlResponse {
   userId: string;
   uploadSasUrl: string;
 }
 export function useFileHandler() {
+  const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -83,7 +85,7 @@ export function useFileHandler() {
     if (!account) {
       setError('You were logged out. Please login again.');
       setTimeout(() => {
-        window.location.href = '/';
+      navigate('/'); // This preserves state
       }, 2000);
       return;
     }
