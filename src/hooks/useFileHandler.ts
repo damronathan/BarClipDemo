@@ -127,7 +127,7 @@ export function useFileHandler() {
       setIsLoading(false);
       throw error;
     }
-  }, []);
+  }, [navigate]);
 
   const uploadFile = useCallback(async () => {
     if (!file) {
