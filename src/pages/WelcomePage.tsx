@@ -61,7 +61,7 @@ const WelcomePage: React.FC = () => {
             (e.target as HTMLElement).style.transform = 'translateY(0)';
           }}
         >
-          View Backend Source Code
+          View Source Code
         </a>
       </footer>
     </div>
