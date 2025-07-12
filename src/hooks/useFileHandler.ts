@@ -81,7 +81,7 @@ export function useFileHandler() {
   const getUploadSasUrl = useCallback(async () => {
     const account = msalInstance.getActiveAccount();
     if (!account) {
-      setError('You were logged out. Please login again.');
+      setError('User not logged in. Redirecting to welcome page...');
       setTimeout(() => {
         window.location.href = '/';
       }, 2000);

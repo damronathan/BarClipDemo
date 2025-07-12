@@ -19,7 +19,7 @@ const FilePicker: React.FC<FilePickerProps> = ({
   const handleButtonClick = () => {
     const account = msalInstance.getActiveAccount();
     if (!account) {
-      setError('You were logged out. Please login again.');
+      setError('User not logged in. Redirecting to welcome page...');
       setTimeout(() => {
         window.location.href = '/';
       }, 2000);
