@@ -94,7 +94,7 @@ export function useFileHandler() {
       const testResponse = await msalInstance.acquireTokenSilent(request);
       startSignalR(testResponse.accessToken);
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/upload-sas-url`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/video/upload-sas-url`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
