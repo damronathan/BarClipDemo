@@ -1,12 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled from 'styled-components';
-import { msalInstance } from "../auth/AuthService";
-
-interface FilePickerProps {
-  className?: string;
-  onFileSelected: (file: File) => void;
-  accept?: string;
-}
+import { msalInstance } from "../services/AuthService";
+import { FilePickerProps } from "../types/video";
 
 const FilePicker: React.FC<FilePickerProps> = ({
   className,

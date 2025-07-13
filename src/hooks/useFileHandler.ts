@@ -1,17 +1,17 @@
 import { useState, useCallback } from 'react';
-import { msalInstance } from '../auth/AuthService';
+import { msalInstance } from '../services/AuthService';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
 interface UploadSasUrlResponse {
   userId: string;
   uploadSasUrl: string;
 }
+
 export function useFileHandler() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sasUrl, setSasUrl] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [uploadSasUrlResponse, setUploadSasUrlResponse] = useState<UploadSasUrlResponse | null>(null);
 
   const pickFile = async () => {
@@ -38,15 +38,10 @@ export function useFileHandler() {
             return;
           }
 
-          // Create FormData and append the file
-          const formData = new FormData();
-          formData.append('VideoFile', file, file.name);
-          console.log('📦 FormData created with file');
-
           // Update state
           setFile(file);
           setError(null);
-          console.log('✅ State updated with file and FormData');
+          console.log('✅ State updated with file');
         }
       };
 
@@ -56,22 +51,6 @@ export function useFileHandler() {
       console.error('❌ Error in pickFile:', err);
       setError(err instanceof Error ? err.message : 'An error occurred while picking the file');
     }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    setFile(e.dataTransfer.files[0]);
   };
 
   const handleButtonClick = () => {
@@ -227,14 +206,10 @@ export function useFileHandler() {
       isLoading,
       error,
       sasUrl,
-      isDragging,
       uploadSasUrlResponse
     },
     handlers: {
       uploadFile,
-      handleDragOver,
-      handleDragLeave,
-      handleDrop,
       handleButtonClick,
       getUploadSasUrl,
       setFile
