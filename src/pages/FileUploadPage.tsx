@@ -74,7 +74,8 @@ const FileUploadPage: React.FC = () => {
           <div className="loading-flex-container">
             <div className="page-title upload-page-title loading-title">
               <h1>BAR CLIP</h1>
-              <p>Please Wait While We Trim Your Video</p>
+              <p>Trimming Video...</p>
+              <p>This may take a few seconds</p>
             </div>
             <Lottie 
               animationData={barClipLottie} 
