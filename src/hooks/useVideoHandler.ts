@@ -3,8 +3,8 @@ import * as AuthService from '../auth/AuthService';
 import * as signalRClient from '../client/signalRClient';
 import * as videoClient from '../client/videoClient';
 
-export function useFileHandler() {
-  const [file, setFile] = useState<File | null>(null);
+export function useVideoHandler() {
+  const [video, setVideo] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sasUrl, setSasUrl] = useState<string | null>(null);
@@ -70,8 +70,8 @@ export function useFileHandler() {
     }
   }, [accessToken]);
 
-  const uploadFile = useCallback(async () => {
-    if (!file) {
+  const trimVideo = useCallback(async () => {
+    if (!video) {
       setError('Please select a file first');
       return;
     }
@@ -85,16 +85,16 @@ export function useFileHandler() {
         return;
       }
 
-      await videoClient.uploadFileToBlob(file, uploadResponse.uploadSasUrl, uploadResponse.userId);
+      await videoClient.uploadVideoToBlob(video, uploadResponse.uploadSasUrl, uploadResponse.userId);
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Upload failed';
       setError(errorMessage);
     }
-  }, [file, getUploadSasUrl]);
+  }, [video, getUploadSasUrl]);
 
   return {
-    state: { file, isLoading, error, sasUrl, uploadSasUrlResponse },
-    handlers: { setFile, uploadFile, getUploadSasUrl },
+    state: { video, isLoading, error, sasUrl, uploadSasUrlResponse },
+    handlers: { setVideo, trimVideo, getUploadSasUrl },
   };
 }

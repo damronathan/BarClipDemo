@@ -1,24 +1,25 @@
 import React from 'react';
-import { useFileHandler } from '../hooks/useVideoHandler';
+import { useVideoHandler } from '../hooks/useVideoHandler';
 import VideoPicker from '../components/VideoPicker';
 import Lottie from 'lottie-react';
 import barClipLottie from '../assets/Bar-Clip-Lottie.json';
 import '../styles/pages.css';
+import TrimButton from '../components/TrimButton';
 
 
-const FileUploadPage: React.FC = () => {
+const VideoTrimPage: React.FC = () => {
   const {
     state: {
-      file,
+      video,
       isLoading,
       error,
       sasUrl,
     },
     handlers: {
-      uploadFile,
-      setFile,            
+      trimVideo,
+      setVideo,            
     }
-  } = useFileHandler();
+  } = useVideoHandler();
 
   const handleFileSelected = (selectedFile: File) => {
     // Check if it's a video file
@@ -28,7 +29,7 @@ const FileUploadPage: React.FC = () => {
     }
 
     // Update state with the selected file and clear any previous errors
-    setFile(selectedFile);
+    setVideo(selectedFile);
   };
 
   return (
@@ -49,21 +50,20 @@ const FileUploadPage: React.FC = () => {
         
         {!sasUrl && !isLoading && (
           <>
-            <VideoPicker onFileSelected={handleFileSelected} />
+            <VideoPicker onVideoSelected={handleFileSelected} />
 
             <div className="upload-button-container">
-              {file && (
-                <button className="upload-button" onClick={uploadFile} disabled={isLoading}>
-                  {isLoading ? 'Trimming...' : 'Trim Video'}
-                </button>
+              {video && (
+                <TrimButton onTrim={trimVideo} isLoading={isLoading} disabled={isLoading} />
               )}
             </div>
 
+
             {error && <div className="error-message">{error}</div>}
             
-            {file && (
+            {video && (
               <div className="file-info">
-                <p>Original Video File: {file.name}</p>
+                <p>Original Video File: {video.name}</p>
               </div>
             )}
           </>
@@ -80,7 +80,8 @@ const FileUploadPage: React.FC = () => {
           }}>
             <div className="page-title upload-page-title" style={{ marginBottom: 8 }}>
               <h1 style={{ marginBottom: 4 }}>BAR CLIP</h1>
-              <p>Please Wait While We Trim Your Video</p>
+              <p>Trimming Video...</p>
+              <p>This may take a few seconds...</p>
             </div>
             <Lottie 
               animationData={barClipLottie} 
@@ -164,4 +165,4 @@ const FileUploadPage: React.FC = () => {
   );
 };
 
-export default FileUploadPage;
+export default VideoTrimPage;

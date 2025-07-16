@@ -2,15 +2,15 @@ import React, { useRef, useState } from "react";
 import styled from 'styled-components';
 import * as AuthService from "../auth/AuthService";
 
-interface FilePickerProps {
+interface VideoPickerProps {
   className?: string;
-  onFileSelected: (file: File) => void;
+  onVideoSelected: (videoFile: File) => void;
   accept?: string;
 }
 
-const FilePicker: React.FC<FilePickerProps> = ({
+const VideoPicker: React.FC<VideoPickerProps> = ({
   className,
-  onFileSelected,
+  onVideoSelected,
   accept = "video/*",
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -31,9 +31,9 @@ const FilePicker: React.FC<FilePickerProps> = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      onFileSelected(file);
+    const videoFile = e.target.files?.[0];
+    if (videoFile) {
+      onVideoSelected(videoFile);
     }
     e.target.value = ""; // reset input so the same file can be picked again
   };
@@ -86,4 +86,4 @@ const ErrorMessage = styled.div`
   font-weight: 500;
 `;
 
-export default FilePicker;
+export default VideoPicker;

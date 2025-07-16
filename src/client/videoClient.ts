@@ -1,6 +1,5 @@
 import * as AuthService from '../auth/AuthService';
 
-//remove all console.log statements
 export interface UploadSasUrlResponse {
   userId: string;
   uploadSasUrl: string;
@@ -37,10 +36,10 @@ export async function getUploadSasUrl(): Promise<UploadSasUrlResponse> {
   return result;
 }
 
-export async function uploadFileToBlob(file: File, uploadSasUrl: string, userId: string): Promise<void> {
+export async function uploadVideoToBlob(videoFile: File, uploadSasUrl: string, userId: string): Promise<void> {
   const response = await fetch(uploadSasUrl, {
     method: 'PUT',
-    body: file,
+    body: videoFile,
     headers: {
       'x-ms-blob-type': 'BlockBlob',
       'x-ms-meta-userId': userId,

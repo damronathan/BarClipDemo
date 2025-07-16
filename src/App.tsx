@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './styles/App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import WelcomePage from './pages/WelcomePage';
-import FileUploadPage from './pages/FileUploadPage';
+import VideoTrimPage from './pages/VideoTrimPage';
 import { msalInstance } from './auth/AuthService';
 
 
@@ -22,7 +22,7 @@ function App() {
 }
 
         if (response) {
-          window.location.href = '/upload';         
+          window.location.href = '/trim';         
         }
         
         setIsInitialized(true);
@@ -44,7 +44,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
-        <Route path="/upload" element={<FileUploadPage />} />
+        <Route path="/trim" element={<VideoTrimPage />} />
       </Routes>
     </Router>
   );
