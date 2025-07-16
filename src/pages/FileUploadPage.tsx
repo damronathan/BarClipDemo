@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFileHandler } from '../hooks/useFileHandler';
+import { useFileHandler } from '../hooks/useVideoHandler';
 import VideoPicker from '../components/VideoPicker';
 import Lottie from 'lottie-react';
 import barClipLottie from '../assets/Bar-Clip-Lottie.json';

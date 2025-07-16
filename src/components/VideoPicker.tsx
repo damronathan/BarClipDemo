@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from 'styled-components';
-import { msalInstance } from "../auth/AuthService";
+import * as AuthService from "../auth/AuthService";
 
 interface FilePickerProps {
   className?: string;
@@ -17,11 +17,11 @@ const FilePicker: React.FC<FilePickerProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const handleButtonClick = () => {
-    const account = msalInstance.getActiveAccount();
+    const account = AuthService.msalInstance.getActiveAccount();
     if (!account) {
-      setError('User not logged in. Redirecting to welcome page...');
+      setError('User not logged in. Redirecting to sign in...');
       setTimeout(() => {
-        window.location.href = '/';
+        AuthService.signIn();
       }, 2000);
       return;
     }
