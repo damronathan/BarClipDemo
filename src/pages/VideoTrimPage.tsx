@@ -81,7 +81,7 @@ const VideoTrimPage: React.FC = () => {
             <div className="page-title upload-page-title" style={{ marginBottom: 8 }}>
               <h1 style={{ marginBottom: 4 }}>BAR CLIP</h1>
               <p>Trimming Video...</p>
-              <p>This may take a few seconds...</p>
+              <p>This may take a few seconds</p>
             </div>
             <Lottie 
               animationData={barClipLottie} 
